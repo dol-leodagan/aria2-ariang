@@ -7,6 +7,7 @@ services:
      ARIA_ALLOW_UNSECURE: 1
      ARIA_TORRENT_LISTEN_PORTS: 44100-44109
      ARIA_DHT_LISTEN_PORTS: 44110
+     ARIANG_CLIENT_CERT_PASSWORD: SomethingThatShouldBeMoreSecure
     ports:
      - "80:80"
      - "443:443"
