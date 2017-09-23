@@ -13,7 +13,7 @@ if [ ! -f "${SERVER_KEY_FILE}" ] || [ ! -f "${SERVER_CERT_FILE}" ] || [ ! -f "${
     if ! (openssl req -x509 -days 3650 -subj '/C=WW/ST=World Wide/L=Terminal/CN=localhost' \
     -extensions SAN \
     -config <(cat /etc/ssl/openssl.cnf \
-         <(printf "\n[SAN]\nsubjectAltName=DNS.1:localhost")) \
+         <(printf "\n[SAN]\nsubjectAltName=DNS.1:localhost\nbasicConstraints=CA:true")) \
     -newkey rsa:2048 -keyout "${SERVER_KEY_FILE}" -out "${SERVER_CERT_FILE}" -nodes \
     && \
     openssl req -new -days 3650 -subj '/C=WW/ST=World Wide/L=Terminal/CN=ariang' \
