@@ -1,0 +1,19 @@
+version: '2'
+services:
+  aria2-ariang:
+    build: ./
+    restart: always
+    environment:
+     ARIA_ALLOW_UNSECURE: 1
+     ARIA_TORRENT_LISTEN_PORTS: 44100-44109
+     ARIA_DHT_LISTEN_PORTS: 44110
+    ports:
+     - "80:80"
+     - "443:443"
+     - "44100-44109:44100-44109/tcp"
+     - "44110:44110/tcp"
+     - "44100-44109:44100-44109/udp"
+     - "44110:44110/udp"
+    volumes:
+     - "./data:/data"
+     - "./conf:/conf"
