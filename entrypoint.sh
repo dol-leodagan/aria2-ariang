@@ -27,7 +27,9 @@ if [ ! -f "${SERVER_KEY_FILE}" ] || [ ! -f "${SERVER_CERT_FILE}" ] || [ ! -f "${
     -passout pass:"${ARIANG_CLIENT_CERT_PASSWORD:-ThisIsNoSecurePassword}" \
     -out "${CLIENT_PFX_FILE}" \
     && \
-    rm -f "${CLIENT_TMP_REQ_FILE}" "${CLIENT_TMP_KEY_FILE}" "${CLIENT_TMP_CERT_FILE}"); then
+    rm -f "${CLIENT_TMP_REQ_FILE}" "${CLIENT_TMP_KEY_FILE}" "${CLIENT_TMP_CERT_FILE}" \
+    && \
+    chmod o-rwx "${CLIENT_PFX_FILE}" "${SERVER_KEY_FILE}"); then
         echo "Error while generating SSL certificates..."
 	exit 1
     fi
@@ -89,6 +91,8 @@ DHT_LISTEN_PORTS=${ARIA_DHT_LISTEN_PORTS:-44110}
 echo "Listening on Ports ${LISTEN_PORTS}, DHT ${DHT_LISTEN_PORTS}"
 
 export ARIA2_DOWNLOAD_DIR="/data/pending"
+
+umask 002
 
 aria2c --enable-rpc --listen-port="${LISTEN_PORTS}" --dht-listen-port="${DHT_LISTEN_PORTS}" \
        --save-session /conf/.aria2-session --input-file /conf/.aria2-session --force-save --save-session-interval=60 \
