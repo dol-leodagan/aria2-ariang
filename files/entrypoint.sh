@@ -78,7 +78,7 @@ if [ ! -f /conf/.aria-dht6.dat ]; then
     fi
 fi
 
-if ! sed -i -e 's/rpcPort:"6800",rpcInterface:"jsonrpc",protocol:"http"/rpcPort:"443",rpcInterface:"jsonrpc",protocol:"wss"/' /aria-ng/js/*; then
+if ! sed -i -e 's/rpcPort:"6800",rpcInterface:"jsonrpc",protocol:"http"/rpcPort:"'"${ARIANG_DEFAULT_RPCPORT:-443}"'",rpcInterface:"jsonrpc",protocol:"wss"/' /aria-ng/js/*; then
     echo "Error while setting AriaNg default RPC Config..."
     exit 1
 fi

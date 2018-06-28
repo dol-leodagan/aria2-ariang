@@ -8,6 +8,7 @@ services:
      ARIA_TORRENT_LISTEN_PORTS: 44120-44129
      ARIA_DHT_LISTEN_PORTS: 44130
      ARIANG_CLIENT_CERT_PASSWORD: SomethingThatShouldBeMoreSecure
+     ARIANG_DEFAULT_RPCPORT: 8443
     ports:
      - "8080:80"
      - "8443:443"
