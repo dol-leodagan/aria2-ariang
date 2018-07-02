@@ -18,8 +18,9 @@ RUN apk update && \
 COPY files/ /
 
 WORKDIR /
-VOLUME ["/data"]
-VOLUME ["/conf"]
+
+VOLUME ["/data", "/conf"]
+
 EXPOSE 80 443
 
 CMD ["/entrypoint.sh"]
