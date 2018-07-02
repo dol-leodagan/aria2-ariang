@@ -15,7 +15,7 @@ if [ "$DOCKER_TAG" == "latest" ]; then
 else
   BUILD_VERSION="$DOCKER_TAG"
 fi
-
+echo "Hook Build with values: VCS_REF:$SOURCE_COMMIT, BUILD_VERSION:$BUILD_VERSION, IMAGE_NAME:$IMAGE_NAME"
 docker build \
   --build-arg VCS_REF="$SOURCE_COMMIT" \
   --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \

@@ -12,8 +12,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.description="Web backend for downloading files and torrents through Aria2 with AriaNG UI" \
       org.label-schema.usage="https://github.com/dol-leodagan/aria2-ariang/blob/master/README.md" \
       org.label-schema.schema-version="1.0.0-rc1" \
-      maintainer="leodagan@freyad.net" \
-      author="Leodagan"
+      maintainer="Leodagan <leodagan@freyad.net>"
 
 RUN apk update && \
     apk add --no-cache --update \
