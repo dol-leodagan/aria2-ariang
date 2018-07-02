@@ -2,12 +2,18 @@ FROM alpine:edge
 
 ARG BUILD_DATE=now
 ARG VCS_REF=local
+ARG BUILD_VERSION=dev
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.vcs-url="https://github.com/dol-leodagan/aria2-ariang.git" \
+      org.label-schema.version=$BUILD_VERSION \
       org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/dol-leodagan/aria2-ariang.git" \
+      org.label-schema.name="aria2-ariang" \
+      org.label-schema.description="Web backend for downloading files and torrents through Aria2 with AriaNG UI" \
+      org.label-schema.usage="https://github.com/dol-leodagan/aria2-ariang/blob/master/README.md" \
       org.label-schema.schema-version="1.0.0-rc1" \
-      maintainer="Leodagan <leodagan@freyad.net>"
+      maintainer="leodagan@freyad.net" \
+      author="Leodagan"
 
 RUN apk update && \
     apk add --no-cache --update \
