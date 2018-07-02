@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 ### SSL Certificates
 SERVER_CERT_FILE="/conf/.ariang_nginx_tls_server.crt"
@@ -31,7 +31,7 @@ if [ ! -f "${SERVER_KEY_FILE}" ] || [ ! -f "${SERVER_CERT_FILE}" ] || [ ! -f "${
     && \
     chmod o-rwx "${CLIENT_PFX_FILE}" "${SERVER_KEY_FILE}"); then
         echo "Error while generating SSL certificates..."
-	exit 1
+        exit 1
     fi
 fi
 
@@ -40,7 +40,7 @@ fi
 if [ "${ARIA_ALLOW_UNSECURE}x" != "x" ] && [ "$ARIA_ALLOW_UNSECURE" -eq 1 ]; then
     if ! cp -f /default-unsecure.conf /etc/nginx/conf.d/default.conf; then
         echo "Error while copying Unsecure Nginx Configuration..."
-	exit 1
+        exit 1
     fi
 fi
 
@@ -53,32 +53,32 @@ fi
 if [ ! -f /conf/.aria2.conf ]; then
     if ! cp /root/.aria2/aria2.conf /conf/.aria2.conf; then
         echo "Error while copying aria2 configuration file..."
-	exit 1
+        exit 1
     fi
 fi
 
 if [ ! -f /conf/.aria2-session ]; then
     if ! touch /conf/.aria2-session; then
         echo "Error while initializing aria2 session file..."
-	exit 1
+        exit 1
     fi
 fi
 
 if [ ! -f /conf/.aria-dht.dat ]; then
     if ! touch /conf/.aria-dht.dat; then
         echo "Error while initializing aria2 DHT file..."
-	exit 1
+        exit 1
     fi
 fi
 
 if [ ! -f /conf/.aria-dht6.dat ]; then
     if ! touch /conf/.aria-dht6.dat; then
         echo "Error while initializing aria2 DHT6 file..."
-	exit 1
+        exit 1
     fi
 fi
 
-if ! sed -i -e 's/rpcPort:"6800",rpcInterface:"jsonrpc",protocol:"http"/rpcPort:"'"${ARIANG_DEFAULT_RPCPORT:-443}"'",rpcInterface:"jsonrpc",protocol:"wss"/' /aria-ng/js/*; then
+if ! sed -i -e 's/rpcPort:"6800",rpcInterface:"jsonrpc",protocol:"http"/rpcPort:"'"${ARIANG_DEFAULT_SECURE_RPCPORT:-443}"'",rpcInterface:"jsonrpc",protocol:"wss"/' /aria-ng/js/*; then
     echo "Error while setting AriaNg default RPC Config..."
     exit 1
 fi
@@ -94,7 +94,7 @@ export ARIA2_DOWNLOAD_DIR="/data/pending"
 
 umask 002
 
-aria2c --enable-rpc --listen-port="${LISTEN_PORTS}" --dht-listen-port="${DHT_LISTEN_PORTS}" \
+exec aria2c --enable-rpc --listen-port="${LISTEN_PORTS}" --dht-listen-port="${DHT_LISTEN_PORTS}" \
        --save-session /conf/.aria2-session --input-file /conf/.aria2-session --force-save --save-session-interval=60 \
        -d "$ARIA2_DOWNLOAD_DIR" --netrc-path=/conf/.netrc --dht-file-path=/conf/.aria-dht.dat --dht-file-path6=/conf/.aria-dht6.dat \
        --conf-path=/conf/.aria2.conf --log-level=info

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# $IMAGE_NAME var is injected into the build so the tag is correct. 
+
+SOURCE_COMMIT="$(git rev-parse --short HEAD)"
+
+if [ "$DOCKER_TAG" == "latest" ]; then
+
+  LAST_GIT_TAG="$(git for-each-ref refs/tags --sort=-taggerdate --format='%(refname:short)' --count=1)"
+  if [ -z "$LAST_GIT_TAG" ]; then
+    LAST_GIT_TAG="$DOCKER_TAG"
+  fi
+  
+  BUILD_VERSION="$LAST_GIT_TAG-rc$SOURCE_COMMIT"
+else
+  BUILD_VERSION="$DOCKER_TAG"
+fi
+echo "Hook Build with values: VCS_REF:$SOURCE_COMMIT, BUILD_VERSION:$BUILD_VERSION, IMAGE_NAME:$IMAGE_NAME"
+docker build \
+  --build-arg VCS_REF="$SOURCE_COMMIT" \
+  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+  --build-arg BUILD_VERSION="$BUILD_VERSION" \
+  -t $IMAGE_NAME .
+
