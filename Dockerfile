@@ -14,17 +14,18 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0.0-rc1" \
       maintainer="Leodagan <leodagan@freyad.net>"
 
-RUN apk update && \
+RUN set -ex; \
+    apk update; \
     apk add --no-cache --update \
-        bash aria2 nginx unzip openssl && \
-    aria2c "https://github.com/mayswind/AriaNg-DailyBuild/archive/master.zip" -d / && \
-#    aria2c "https://github.com/mayswind/AriaNg/releases/download/0.2.0/aria-ng-0.2.0.zip" -d / && \
-    unzip /*.zip -d /aria-ng && \
-    mv -n "$(dirname "$(find /aria-ng -name "index.html")")"/* /aria-ng && \
-    rm -f /*.zip && \
-    apk del unzip && \
-    echo "pid /nginx.pid;" >> /etc/nginx/nginx.conf && \
-    rm -rf /var/cache/* /tmp/* /var/log/* ~/.cache && \
+        bash aria2 nginx unzip openssl1.0; \
+    aria2c "https://github.com/mayswind/AriaNg-DailyBuild/archive/master.zip" -d /;  \
+#    aria2c "https://github.com/mayswind/AriaNg/releases/download/0.2.0/aria-ng-0.2.0.zip" -d /; \
+    unzip /*.zip -d /aria-ng; \
+    mv -n "$(dirname "$(find /aria-ng -name "index.html")")"/* /aria-ng; \
+    rm -f /*.zip; \
+    apk del unzip; \
+    echo "pid /nginx.pid;" >> /etc/nginx/nginx.conf; \
+    rm -rf /var/cache/* /tmp/* /var/log/* ~/.cache; \
     mkdir -p /var/log/nginx
 
 COPY files/ /
