@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ### SSL Certificates
 SERVER_CERT_FILE="/conf/.ariang_nginx_tls_server.crt"
@@ -9,11 +9,13 @@ if [ ! -f "${SERVER_KEY_FILE}" ] || [ ! -f "${SERVER_CERT_FILE}" ] || [ ! -f "${
     CLIENT_TMP_REQ_FILE="/tmp/.ariang_nginx_tls_client.req"
     CLIENT_TMP_KEY_FILE="/tmp/.ariang_nginx_tls_client.key"
     CLIENT_TMP_CERT_FILE="/tmp/.ariang_nginx_tls_client.crt"
+    CLIENT_TMP_CNF_FILE="/tmp/openssl.cnf"
 
-    if ! (openssl req -x509 -days 3650 -subj '/C=WW/ST=World Wide/L=Terminal/CN=localhost' \
+    if ! ( (cat /etc/ssl/openssl.cnf; printf "\n[SAN]\nsubjectAltName=DNS.1:localhost\nbasicConstraints=CA:true") > "${CLIENT_TMP_CNF_FILE}" \
+    && \
+    openssl req -x509 -days 3650 -subj '/C=WW/ST=World Wide/L=Terminal/CN=localhost' \
     -extensions SAN \
-    -config <(cat /etc/ssl/openssl.cnf \
-         <(printf "\n[SAN]\nsubjectAltName=DNS.1:localhost\nbasicConstraints=CA:true")) \
+    -config "${CLIENT_TMP_CNF_FILE}" \
     -newkey rsa:2048 -keyout "${SERVER_KEY_FILE}" -out "${SERVER_CERT_FILE}" -nodes \
     && \
     openssl req -new -days 3650 -subj '/C=WW/ST=World Wide/L=Terminal/CN=ariang' \
@@ -27,7 +29,7 @@ if [ ! -f "${SERVER_KEY_FILE}" ] || [ ! -f "${SERVER_CERT_FILE}" ] || [ ! -f "${
     -passout pass:"${ARIANG_CLIENT_CERT_PASSWORD:-ThisIsNoSecurePassword}" \
     -out "${CLIENT_PFX_FILE}" \
     && \
-    rm -f "${CLIENT_TMP_REQ_FILE}" "${CLIENT_TMP_KEY_FILE}" "${CLIENT_TMP_CERT_FILE}" \
+    rm -f "${CLIENT_TMP_REQ_FILE}" "${CLIENT_TMP_KEY_FILE}" "${CLIENT_TMP_CERT_FILE}" "${CLIENT_TMP_CNF_FILE}"\
     && \
     chmod o-rwx "${CLIENT_PFX_FILE}" "${SERVER_KEY_FILE}"); then
         echo "Error while generating SSL certificates..."

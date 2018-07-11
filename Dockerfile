@@ -17,7 +17,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 RUN set -ex; \
     apk update; \
     apk add --no-cache --update \
-        bash aria2 nginx unzip openssl1.0; \
+        aria2 nginx unzip libressl ca-certificates; \
+    update-ca-certificates; \
     aria2c "https://github.com/mayswind/AriaNg-DailyBuild/archive/master.zip" -d /;  \
 #    aria2c "https://github.com/mayswind/AriaNg/releases/download/0.2.0/aria-ng-0.2.0.zip" -d /; \
     unzip /*.zip -d /aria-ng; \
