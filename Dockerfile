@@ -18,8 +18,8 @@ RUN set -ex; \
     apk add --no-cache --update \
         aria2 nginx unzip libressl ca-certificates; \
     update-ca-certificates; \
-    nslookup codeload.github.com; \
-    aria2c "https://codeload.github.com/mayswind/AriaNg-DailyBuild/zip/master" -d /;  \
+    nslookup github.com; \
+    aria2c "https://github.com/mayswind/AriaNg-DailyBuild/archive/master.zip" -d /;  \
 #    aria2c "https://github.com/mayswind/AriaNg/releases/download/0.2.0/aria-ng-0.2.0.zip" -d /; \
     unzip /*.zip -d /aria-ng; \
     mv -n "$(dirname "$(find /aria-ng -name "index.html")")"/* /aria-ng; \
